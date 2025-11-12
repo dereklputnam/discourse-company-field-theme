@@ -9,9 +9,12 @@ field_visibility_rules:
       field_name:
         type: string
         label: "Custom Field Name"
+        description: "The name of the custom user field (case-insensitive)"
         validations:
           min_length: 1
       allowed_groups:
-        type: list
-        list_type: string
+        type: string
         label: "Allowed Groups"
+        description: "Comma-separated list of group names (e.g., netwrix_employees, admins, managers)"
+        validations:
+          min_length: 1
