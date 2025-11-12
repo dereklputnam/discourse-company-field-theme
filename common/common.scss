@@ -1,58 +1,6 @@
 // Show the native Discourse user field when user has permission (field is hidden by JS)
-body[class*="show-custom-field-"] .user-field {
+// The field is hidden by default via injected CSS in the initializer
+// When the body has the show-custom-field-{id} class, we show it
+body[class*="show-custom-field-"] .public-user-field {
   display: block !important;
-}
-
-// Hide custom field display by default - specific to our components
-.user-card-custom-field.custom-field-display,
-.user-profile-custom-field.custom-field-display {
-  display: none !important;
-}
-
-// Show custom field when user has permission (added by initializer)
-body[class*="show-custom-field-"] .user-card-custom-field.custom-field-display,
-body[class*="show-custom-field-"] .user-profile-custom-field.custom-field-display {
-  display: block !important;
-}
-
-// User Card Custom Field Styling
-.user-card-custom-field {
-  margin-top: 8px;
-  padding: 6px 0;
-  border-top: 1px solid var(--primary-low);
-
-  .custom-field-label {
-    font-weight: bold;
-    color: var(--primary-medium);
-    margin-right: 6px;
-  }
-
-  .custom-field-value {
-    color: var(--primary);
-  }
-}
-
-// User Profile Custom Field Styling
-.user-profile-custom-field {
-  margin: 12px 0;
-  padding: 10px;
-  background-color: var(--primary-very-low);
-  border-radius: 4px;
-  border-left: 3px solid var(--tertiary);
-
-  .custom-field-container {
-    display: flex;
-    align-items: center;
-
-    .custom-field-label {
-      font-weight: bold;
-      color: var(--primary-medium);
-      margin-right: 8px;
-    }
-
-    .custom-field-value {
-      color: var(--primary);
-      font-size: 1.05em;
-    }
-  }
 }
