@@ -1,10 +1,12 @@
-// Hide custom field display by default
-.custom-field-display {
+// Hide custom field display by default - specific to our components
+.user-card-custom-field.custom-field-display,
+.user-profile-custom-field.custom-field-display {
   display: none !important;
 }
 
 // Show custom field when user has permission (added by initializer)
-body[class*="show-custom-field-"] .custom-field-display {
+body[class*="show-custom-field-"] .user-card-custom-field.custom-field-display,
+body[class*="show-custom-field-"] .user-profile-custom-field.custom-field-display {
   display: block !important;
 }
 
