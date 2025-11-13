@@ -58,8 +58,8 @@ export default {
 
         // Check if user is in any of the allowed groups for this rule
         // groups type returns an array of group IDs
-        const allowedGroupIds = rule.allowed_groups || [];
-        const isInAllowedGroup = allowedGroupIds.some(groupId => userGroupIds.includes(groupId));
+        const allowedGroupIds = Array.isArray(rule.allowed_groups) ? rule.allowed_groups : [];
+        const isInAllowedGroup = allowedGroupIds.length > 0 && allowedGroupIds.some(groupId => userGroupIds.includes(groupId));
 
         if (isInAllowedGroup) {
           // Inject specific show CSS for this field with unique ID per rule
