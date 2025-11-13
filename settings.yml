@@ -1,20 +1,49 @@
-field_visibility_rules:
-  type: objects
-  default: []
-  description: "List of field visibility rules. Each rule defines which groups can see which custom user field."
-  schema:
-    name: New Field
-    identifier: field_name
-    properties:
-      field_name:
-        type: string
-        label: "Field Name"
-        description: "The name of the custom user field (case-insensitive)"
-        validations:
-          min_length: 1
-      allowed_groups:
-        type: string
-        label: "Allowed Groups"
-        description: "Comma-separated list of group names (e.g., employees, admins, managers)"
-        validations:
-          min_length: 1
+field_1_name:
+  type: string
+  default: ""
+  description: "Name of the first user field to hide (leave blank to disable)"
+
+field_1_allowed_groups:
+  type: group_list
+  default: ""
+  description: "Groups that can see field 1"
+
+field_2_name:
+  type: string
+  default: ""
+  description: "Name of the second user field to hide (leave blank to disable)"
+
+field_2_allowed_groups:
+  type: group_list
+  default: ""
+  description: "Groups that can see field 2"
+
+field_3_name:
+  type: string
+  default: ""
+  description: "Name of the third user field to hide (leave blank to disable)"
+
+field_3_allowed_groups:
+  type: group_list
+  default: ""
+  description: "Groups that can see field 3"
+
+field_4_name:
+  type: string
+  default: ""
+  description: "Name of the fourth user field to hide (leave blank to disable)"
+
+field_4_allowed_groups:
+  type: group_list
+  default: ""
+  description: "Groups that can see field 4"
+
+field_5_name:
+  type: string
+  default: ""
+  description: "Name of the fifth user field to hide (leave blank to disable)"
+
+field_5_allowed_groups:
+  type: group_list
+  default: ""
+  description: "Groups that can see field 5"

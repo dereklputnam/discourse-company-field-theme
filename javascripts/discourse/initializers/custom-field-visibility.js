@@ -6,9 +6,17 @@ export default {
   initialize(container) {
     withPluginApi("0.8", (api) => {
       const currentUser = api.getCurrentUser();
-      const rules = settings.field_visibility_rules;
 
-      if (!rules || rules.length === 0) {
+      // Build rules array from individual settings
+      const rules = [
+        { field_name: settings.field_1_name, allowed_groups: settings.field_1_allowed_groups },
+        { field_name: settings.field_2_name, allowed_groups: settings.field_2_allowed_groups },
+        { field_name: settings.field_3_name, allowed_groups: settings.field_3_allowed_groups },
+        { field_name: settings.field_4_name, allowed_groups: settings.field_4_allowed_groups },
+        { field_name: settings.field_5_name, allowed_groups: settings.field_5_allowed_groups },
+      ].filter(rule => rule.field_name && rule.field_name.trim() !== "");
+
+      if (rules.length === 0) {
         return;
       }
 
@@ -57,8 +65,9 @@ export default {
         }
 
         // Check if user is in any of the allowed groups for this rule
+        // group_list settings are pipe-separated strings
         const allowedGroupsStr = rule.allowed_groups || "";
-        const allowedGroups = allowedGroupsStr.split(',').map(g => g.trim()).filter(g => g.length > 0);
+        const allowedGroups = allowedGroupsStr.split('|').map(g => g.trim()).filter(g => g.length > 0);
         const isInAllowedGroup = allowedGroups.some(group => userGroupNames.includes(group));
 
         if (isInAllowedGroup) {
