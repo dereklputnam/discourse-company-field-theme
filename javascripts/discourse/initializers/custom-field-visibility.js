@@ -27,6 +27,9 @@ export default {
         return;
       }
 
+      // Track which fields have already been processed
+      const processedFields = new Set();
+
       rules.forEach((rule) => {
         const customField = userFields.find(
           (field) => field.name.toLowerCase() === rule.field_name.toLowerCase()
@@ -36,23 +39,26 @@ export default {
           return;
         }
 
-        // Hide this field by default for everyone
         const fieldId = customField.id;
         const fieldName = customField.dasherized_name || customField.name.toLowerCase().replace(/\s+/g, '-');
 
-        const style = document.createElement('style');
-        style.id = `custom-field-visibility-${fieldId}`;
-        style.innerHTML = `
-          .public-user-field.${fieldName} { display: none !important; }
-          .public-user-field.public-user-field__${fieldName} { display: none !important; }
-          .user-card .public-user-field.${fieldName} { display: none !important; }
-          .user-card .public-user-field__${fieldName} { display: none !important; }
-          .user-field-${fieldId} { display: none !important; }
-          .user-profile-fields .user-field-${fieldId} { display: none !important; }
-          .public-user-fields .user-field-${fieldId} { display: none !important; }
-          .collapsed-info .user-field[data-field-id="${fieldId}"] { display: none !important; }
-        `;
-        document.head.appendChild(style);
+        // Only inject hide CSS once per field
+        if (!processedFields.has(fieldId)) {
+          const hideStyle = document.createElement('style');
+          hideStyle.id = `custom-field-visibility-hide-${fieldId}`;
+          hideStyle.innerHTML = `
+            .public-user-field.${fieldName} { display: none !important; }
+            .public-user-field.public-user-field__${fieldName} { display: none !important; }
+            .user-card .public-user-field.${fieldName} { display: none !important; }
+            .user-card .public-user-field__${fieldName} { display: none !important; }
+            .user-field-${fieldId} { display: none !important; }
+            .user-profile-fields .user-field-${fieldId} { display: none !important; }
+            .public-user-fields .user-field-${fieldId} { display: none !important; }
+            .collapsed-info .user-field[data-field-id="${fieldId}"] { display: none !important; }
+          `;
+          document.head.appendChild(hideStyle);
+          processedFields.add(fieldId);
+        }
 
         // Check if user is in any of the allowed groups for this rule
         const allowedGroupsStr = rule.allowed_groups || "";
@@ -60,7 +66,20 @@ export default {
         const isInAllowedGroup = allowedGroups.some(group => userGroupNames.includes(group));
 
         if (isInAllowedGroup) {
-          document.body.classList.add(`show-custom-field-${fieldId}`);
+          // Inject specific show CSS for this field
+          const showStyle = document.createElement('style');
+          showStyle.id = `custom-field-visibility-show-${fieldId}`;
+          showStyle.innerHTML = `
+            .public-user-field.${fieldName} { display: block !important; }
+            .public-user-field.public-user-field__${fieldName} { display: block !important; }
+            .user-card .public-user-field.${fieldName} { display: block !important; }
+            .user-card .public-user-field__${fieldName} { display: block !important; }
+            .user-field-${fieldId} { display: block !important; }
+            .user-profile-fields .user-field-${fieldId} { display: block !important; }
+            .public-user-fields .user-field-${fieldId} { display: block !important; }
+            .collapsed-info .user-field[data-field-id="${fieldId}"] { display: block !important; }
+          `;
+          document.head.appendChild(showStyle);
         }
       });
     });

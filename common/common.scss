@@ -1,6 +1,3 @@
 // Show the native Discourse user field when user has permission (field is hidden by JS)
 // The field is hidden by default via injected CSS in the initializer
-// When the body has the show-custom-field-{id} class, we show it
-body[class*="show-custom-field-"] .public-user-field {
-  display: block !important;
-}
+// The specific show rules are injected dynamically by the JavaScript initializer
