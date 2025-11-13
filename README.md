@@ -1,4 +1,6 @@
-# Custom Field Visibility Theme for Discourse
+# User Field Visibility for Discourse
+
+> **⚠️ Disclaimer:** The author assumes no liability for data exposure or unintended visibility of user fields. Test thoroughly before production use.
 
 A Discourse theme component that controls visibility of custom user fields based on group membership. Hide sensitive or internal user fields from public view while making them visible to specific groups.
 
@@ -17,7 +19,7 @@ A Discourse theme component that controls visibility of custom user fields based
 1. Go to your Discourse admin panel
 2. Navigate to **Customize > Themes**
 3. Click **Install** > **From a git repository**
-4. Enter this repository URL
+4. Enter: `https://github.com/dereklputnam/discourse-hidden-user-fields`
 5. Click **Install**
 
 ### Option 2: Install from File
@@ -37,24 +39,25 @@ After installation, configure visibility rules:
 3. Edit **field_visibility_rules** using the JSON editor
 4. Add rules in this format:
 
-```yaml
-- field_name: company
-  allowed_groups:
-    - netwrix_employees
-    - admins
-- field_name: department
-  allowed_groups:
-    - staff
-    - managers
-- field_name: employee_id
-  allowed_groups:
-    - admins
+Each rule should have:
+- **Field Name**: The exact name of the custom user field (case-insensitive)
+- **Allowed Groups**: Comma-separated list of group names (e.g., `employees, admins, managers`)
+
+**Example configurations:**
+
+Single group:
+```
+Field Name: company
+Allowed Groups: employees
 ```
 
-### Rule Properties
+Multiple groups:
+```
+Field Name: department
+Allowed Groups: staff, managers, admins
+```
 
-- **field_name**: The exact name of the custom user field (case-insensitive)
-- **allowed_groups**: Array of group names that can see this field. Users in ANY of these groups will see the field.
+Users in ANY of the listed groups will be able to see the field.
 
 ## Requirements
 
@@ -65,11 +68,11 @@ After installation, configure visibility rules:
 ## Theme Structure
 
 ```
-discourse-company-field-theme/
+discourse-hidden-user-fields/
 ├── about.json                          # Theme metadata
 ├── settings.yml                        # Theme settings schema
 ├── common/
-│   └── common.scss                     # CSS for showing fields
+│   └── common.scss                     # Minimal CSS placeholder
 └── javascripts/discourse/initializers/
     └── custom-field-visibility.js      # Main logic
 ```
@@ -77,10 +80,10 @@ discourse-company-field-theme/
 ## How It Works
 
 1. On page load, the initializer reads your visibility rules
-2. For each rule, it finds the corresponding custom field
-3. CSS is injected to hide that field from everyone
-4. If the current user is in the allowed group, a body class is added
-5. The CSS then shows the field only when that body class is present
+2. For each rule, it finds the corresponding custom field by name
+3. Hide CSS is injected once per field to hide it from everyone by default
+4. For each rule, if the current user is in any of the allowed groups, show CSS is injected for that specific field
+5. Fields are only visible when the user has permission via group membership
 
 ## License
 
